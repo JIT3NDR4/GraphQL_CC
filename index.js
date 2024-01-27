@@ -9,15 +9,24 @@ import { typeDefs } from './schema.js'
 
 const resolvers = {
     Query: {
-        games(){
+        games() {
             return db.games
         },
-        reviews(){
+        reviews() {
             return db.reviews
         },
-        authors(){
+        authors() {
             return db.authors
         },
+        review(_, args) {
+            return db.reviews.find((review) => review.id === args.id)
+        },
+        game(_, args) {
+            return db.games.find((game) => game.id === args.id)
+        },
+        authors(_, args) {
+            return db.authors.find((author) => author.id === args.id)
+        }
     }
 }
 
@@ -25,13 +34,13 @@ const resolvers = {
 const server = new ApolloServer({
     //typeDefs -- definitions of data types
     typeDefs,
-     //resolvers -- handle incoming requests and return data to the clients
+    //resolvers -- handle incoming requests and return data to the clients
     resolvers
 
 })
 
 const { url } = await startStandaloneServer(server, {
-    listen: {port: 4000}
+    listen: { port: 4000 }
 
 })
 
